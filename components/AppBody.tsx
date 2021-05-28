@@ -115,7 +115,7 @@ const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
         <div className="container w-full flex flex-col items-center overflow-auto pb-14">
           <div className="relative bg-black h-56 lg:h-96 w-full xl:w-3/5 overflow-hidden">
             <div id={`botr_${state.divKey}_div`} className="h-full w-full" />
-            {state.jwPlayerHostedLibraryLink && (
+            {streamIsActive && state.jwPlayerHostedLibraryLink && (
               <Head>
                 <script src={state.jwPlayerHostedLibraryLink} />
               </Head>

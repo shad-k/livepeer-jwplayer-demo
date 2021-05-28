@@ -14,7 +14,7 @@ const getSignatureForJWPlayerAPI = (
   if (playbackURL) {
     paramsToText += `&sourceformat=m3u8&sourcetype=url&sourceurl=${encodeURIComponent(
       playbackURL
-    )}&title=${encodeURIComponent("Livepeer Demo")}`;
+    )}&tags=Livepeer&title=${encodeURIComponent("Livepeer Demo")}`;
   }
   paramsToText += secret;
   shasum.update(paramsToText);
@@ -98,7 +98,7 @@ const createVideoOnJWPlayer = async (key, secret, playbackURL) => {
     playbackURL
   );
   const requestURL = new URL(
-    `https://api.jwplatform.com/v1/videos/create?api_format=json&api_nonce=${nonce}&api_timestamp=${timestamp}&api_signature=${signature}&api_key=${key}&sourceformat=m3u8&sourcetype=url&sourceurl=${playbackURL}&title=${encodeURIComponent(
+    `https://api.jwplatform.com/v1/videos/create?api_format=json&api_nonce=${nonce}&api_timestamp=${timestamp}&api_signature=${signature}&api_key=${key}&sourceformat=m3u8&sourcetype=url&sourceurl=${playbackURL}&tags=Livepeer&title=${encodeURIComponent(
       "Livepeer Demo"
     )}`
   );
