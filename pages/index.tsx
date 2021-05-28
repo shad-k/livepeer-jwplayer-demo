@@ -7,6 +7,8 @@ import { createStream, getStreamStatus } from "../utils/apiFactory";
 const INITIAL_STATE = {
   appState: APP_STATES.API_KEY,
   apiKey: null,
+  jwPlayerAPIKey: null,
+  jwPlayerSecret: null,
   streamId: null,
   playbackId: null,
   streamKey: null,
@@ -16,11 +18,13 @@ const INITIAL_STATE = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "SUBMIT_API_KEY":
+    case "SUBMIT_INPUTS":
       return {
         ...state,
         appState: APP_STATES.CREATE_BUTTON,
         apiKey: action.payload.apiKey,
+        jwPlayerAPIKey: action.payload.jwPlayerAPIKey,
+        jwPlayerSecret: action.payload.jwPlayerSecret,
       };
     case "CREATE_CLICKED":
       return {
@@ -148,8 +152,8 @@ export default function App() {
       </header>
       <AppBody
         state={state}
-        setApiKey={(apiKey) =>
-          dispatch({ type: "SUBMIT_API_KEY", payload: { apiKey } })
+        setApiKey={(apiKey, jwPlayerAPIKey, jwPlayerSecret) =>
+          dispatch({ type: "SUBMIT_INPUTS", payload: { apiKey } })
         }
         createStream={() => dispatch({ type: "CREATE_CLICKED" })}
       />

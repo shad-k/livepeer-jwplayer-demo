@@ -11,7 +11,11 @@ import { APP_STATES } from "../utils/types";
 
 interface Props {
   state: any;
-  setApiKey: (apiKey: string) => void;
+  setApiKey: (
+    apiKey: string,
+    jwPlayerAPIKey: string,
+    jwPlayerSecret: string
+  ) => void;
   createStream: () => void;
 }
 
