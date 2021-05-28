@@ -147,10 +147,15 @@ export default async (req, res) => {
 
         const videoKey = createVideoOnJWPlayerResponse.video.key;
         const playerKey = availablePlayersResponse.key;
-        const jwPlayerHostedLibraryLink = `https://cdn.jwplayer.com/libraries/${playerKey}.js`;
+        const jwPlayerHostedLibraryLink = `https://cdn.jwplayer.com/players/${videoKey}-${playerKey}.js`;
+        const divKey = `${videoKey}_${playerKey}`;
 
         res.statusCode = 200;
-        res.json({ ...createStreamResponse.data, jwPlayerHostedLibraryLink });
+        res.json({
+          ...createStreamResponse.data,
+          jwPlayerHostedLibraryLink,
+          divKey,
+        });
       } else {
         res.statusCode = 500;
         res.json({ error: "Something went wrong" });

@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 
 import APIKeyForm from "./APIKeyForm";
 
@@ -25,30 +26,20 @@ const copyTextToClipboard = (text: string) => {
 const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
   const { playbackId, streamIsActive, streamKey } = state;
   const [showRequest, setShowRequest] = React.useState(false);
-  const [videoEl, setVideoEl] = React.useState(null);
 
-  const onVideo = React.useCallback((el) => {
-    setVideoEl(el);
-  }, []);
+  // React.useEffect(() => {
+  //   if (streamIsActive && playbackId) {
+  //     (window as any).jwplayer("video").setup({
+  //       playlist: [{
+  //         file: `https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`,
+  //       }]
+  //     });
+  //   }
 
-  React.useEffect(() => {
-    if (videoEl == null) return;
-    if (streamIsActive && playbackId) {
-      (window as any).jwplayer("video").setup({
-        controls: true,
-        autostart: true,
-        playlist: [
-          {
-            file: `https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`,
-          },
-        ],
-      });
-    }
-
-    () => {
-      (window as any).jwplayer("video").remove();
-    };
-  }, [streamIsActive, playbackId]);
+  //   () => {
+  //     (window as any).jwplayer("video").remove();
+  //   }
+  // }, [streamIsActive, playbackId]);
 
   switch (state.appState) {
     case APP_STATES.API_KEY:
@@ -123,7 +114,12 @@ const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
       return (
         <div className="container w-full flex flex-col items-center overflow-auto pb-14">
           <div className="relative bg-black h-56 lg:h-96 w-full xl:w-3/5 overflow-hidden">
-            <div id="video" ref={onVideo} className="h-full w-full" />
+            <div id={`botr_${state.divKey}_div`} className="h-full w-full" />
+            {state.jwPlayerHostedLibraryLink && (
+              <Head>
+                <script src={state.jwPlayerHostedLibraryLink} />
+              </Head>
+            )}
             <div className="bg-white rounded-xl flex items-center justify-center absolute right-2 top-2 p-1 text-xs">
               <div
                 className={`animate-pulse ${

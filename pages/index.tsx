@@ -1,5 +1,4 @@
 import React from "react";
-import Head from "next/head";
 
 import { APP_STATES } from "../utils/types";
 import AppBody from "../components/AppBody";
@@ -41,6 +40,7 @@ const reducer = (state, action) => {
         playbackId: action.payload.playbackId,
         streamKey: action.payload.streamKey,
         jwPlayerHostedLibraryLink: action.payload.jwPlayerHostedLibraryLink,
+        divKey: action.payload.divKey,
       };
     case "VIDEO_STARTED":
       return {
@@ -86,6 +86,7 @@ export default function App() {
               playbackId,
               streamKey,
               jwPlayerHostedLibraryLink,
+              divKey,
             } = streamCreateResponse.data;
             dispatch({
               type: "STREAM_CREATED",
@@ -94,6 +95,7 @@ export default function App() {
                 playbackId,
                 streamKey,
                 jwPlayerHostedLibraryLink,
+                divKey,
               },
             });
           }
@@ -142,11 +144,6 @@ export default function App() {
 
   return (
     <main className="container pb-12 h-screen m-auto pt-24 lg:pt-40">
-      {state.jwPlayerHostedLibraryLink && (
-        <Head>
-          <script src={state.jwPlayerHostedLibraryLink} />
-        </Head>
-      )}
       <header className="w-full p-3 flex justify-between items-center fixed top-0 left-0 z-10 bg-white">
         <a
           href="https://livepeer.com/docs/"
