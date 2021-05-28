@@ -1,9 +1,4 @@
 import React from "react";
-import videojs from "video.js";
-import "videojs-contrib-hls";
-import "videojs-contrib-quality-levels";
-import "videojs-hls-quality-selector";
-import "video.js/dist/video-js.min.css";
 
 import APIKeyForm from "./APIKeyForm";
 
@@ -39,23 +34,21 @@ const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
   React.useEffect(() => {
     if (videoEl == null) return;
     if (streamIsActive && playbackId) {
-      const player = videojs(videoEl, {
-        autoplay: true,
+      (window as any).jwplayer("video").setup({
         controls: true,
-        sources: [
+        autostart: true,
+        playlist: [
           {
-            src: `https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`,
+            file: `https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`,
           },
         ],
       });
-
-      player.hlsQualitySelector();
-
-      player.on("error", () => {
-        player.src(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
-      });
     }
-  }, [streamIsActive]);
+
+    () => {
+      (window as any).jwplayer("video").remove();
+    };
+  }, [streamIsActive, playbackId]);
 
   switch (state.appState) {
     case APP_STATES.API_KEY:
@@ -130,15 +123,7 @@ const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
       return (
         <div className="container w-full flex flex-col items-center overflow-auto pb-14">
           <div className="relative bg-black h-56 lg:h-96 w-full xl:w-3/5 overflow-hidden">
-            <div data-vjs-player>
-              <video
-                id="video"
-                ref={onVideo}
-                className="h-full w-full video-js vjs-theme-city"
-                controls
-                playsInline
-              />
-            </div>
+            <div id="video" ref={onVideo} className="h-full w-full" />
             <div className="bg-white rounded-xl flex items-center justify-center absolute right-2 top-2 p-1 text-xs">
               <div
                 className={`animate-pulse ${

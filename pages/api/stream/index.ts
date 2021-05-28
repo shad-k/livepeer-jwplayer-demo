@@ -147,7 +147,7 @@ export default async (req, res) => {
 
         const videoKey = createVideoOnJWPlayerResponse.video.key;
         const playerKey = availablePlayersResponse.key;
-        const jwPlayerHostedLibraryLink = `https://cdn.jwplayer.com/players/${videoKey}-${playerKey}.js`;
+        const jwPlayerHostedLibraryLink = `https://cdn.jwplayer.com/libraries/${playerKey}.js`;
 
         res.statusCode = 200;
         res.json({ ...createStreamResponse.data, jwPlayerHostedLibraryLink });
