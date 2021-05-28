@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 
 import { APP_STATES } from "../utils/types";
 import AppBody from "../components/AppBody";
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
   playbackId: null,
   streamKey: null,
   streamIsActive: false,
+  jwPlayerHostedLibraryLink: null,
   error: null,
 };
 
@@ -38,6 +40,7 @@ const reducer = (state, action) => {
         streamId: action.payload.streamId,
         playbackId: action.payload.playbackId,
         streamKey: action.payload.streamKey,
+        jwPlayerHostedLibraryLink: action.payload.jwPlayerHostedLibraryLink,
       };
     case "VIDEO_STARTED":
       return {
@@ -72,12 +75,17 @@ export default function App() {
     if (state.appState === APP_STATES.CREATING_STREAM) {
       (async function () {
         try {
-          const streamCreateResponse = await createStream(state.apiKey);
+          const streamCreateResponse = await createStream(
+            state.apiKey,
+            state.jwPlayerAPIKey,
+            state.jwPlayerSecret
+          );
           if (streamCreateResponse.data) {
             const {
               id: streamId,
               playbackId,
               streamKey,
+              jwPlayerHostedLibraryLink,
             } = streamCreateResponse.data;
             dispatch({
               type: "STREAM_CREATED",
@@ -85,6 +93,7 @@ export default function App() {
                 streamId,
                 playbackId,
                 streamKey,
+                jwPlayerHostedLibraryLink,
               },
             });
           }
@@ -133,6 +142,11 @@ export default function App() {
 
   return (
     <main className="container pb-12 h-screen m-auto pt-24 lg:pt-40">
+      {state.jwPlayerHostedLibraryLink && (
+        <Head>
+          <script src={state.jwPlayerHostedLibraryLink} />
+        </Head>
+      )}
       <header className="w-full p-3 flex justify-between items-center fixed top-0 left-0 z-10 bg-white">
         <a
           href="https://livepeer.com/docs/"
@@ -153,7 +167,10 @@ export default function App() {
       <AppBody
         state={state}
         setApiKey={(apiKey, jwPlayerAPIKey, jwPlayerSecret) =>
-          dispatch({ type: "SUBMIT_INPUTS", payload: { apiKey } })
+          dispatch({
+            type: "SUBMIT_INPUTS",
+            payload: { apiKey, jwPlayerAPIKey, jwPlayerSecret },
+          })
         }
         createStream={() => dispatch({ type: "CREATE_CLICKED" })}
       />

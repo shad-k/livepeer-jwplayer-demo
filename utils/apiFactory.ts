@@ -5,7 +5,11 @@ const apiInstance = axios.create({
   timeout: 10000,
 });
 
-export const createStream = (apiKey: string): Promise<any> => {
+export const createStream = (
+  apiKey: string,
+  jwPlayerAPIKey: string,
+  jwPlayerSecret: string
+): Promise<any> => {
   return apiInstance.post(
     "/stream",
     {
@@ -38,6 +42,8 @@ export const createStream = (apiKey: string): Promise<any> => {
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${apiKey}`,
+        "x-jwplayer-key": jwPlayerAPIKey,
+        "x-jwplayer-secret": jwPlayerSecret,
       },
     }
   );
