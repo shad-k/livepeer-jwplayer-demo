@@ -8,11 +8,13 @@ const VideoPage = () => {
 
   return (
     <div className="w-screen h-screen">
-      <iframe
-        className="w-full h-full"
-        src={`https://cdn.jwplayer.com/players/${playerId}.html`}
-        allowFullScreen
-      />
+      {playerId && (
+        <iframe
+          className="w-full h-full"
+          src={`https://cdn.jwplayer.com/players/${playerId}.html`}
+          allowFullScreen
+        />
+      )}
     </div>
   );
 };
