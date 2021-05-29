@@ -25,7 +25,7 @@ const VideoPage = () => {
           Back to Home
         </button>
       </header>
-      <div className="w-11/12 h-4/5 m-auto">
+      <div className="w-11/12 h-full m-auto">
         {playerId && (
           <iframe
             className="w-full h-full"
