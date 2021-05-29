@@ -28,20 +28,6 @@ const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
   const { playbackId, streamIsActive, streamKey } = state;
   const [showRequest, setShowRequest] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   if (streamIsActive && playbackId) {
-  //     (window as any).jwplayer("video").setup({
-  //       playlist: [{
-  //         file: `https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`,
-  //       }]
-  //     });
-  //   }
-
-  //   () => {
-  //     (window as any).jwplayer("video").remove();
-  //   }
-  // }, [streamIsActive, playbackId]);
-
   switch (state.appState) {
     case APP_STATES.API_KEY:
       return <APIKeyForm setApiKey={setApiKey} />;
@@ -137,6 +123,28 @@ const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
             desktop, or Larix on mobile
           </div>
           <div className="w-11/12 lg:w-full xl:w-3/5 border border-dashed p-2 m-4 flex flex-col text-sm">
+            <div className="flex items-center justify-between mt-2 break-all">
+              <span>
+                Share video:{" "}
+                {`${window.location.href}video/${state.divKey.replace(
+                  "_",
+                  "-"
+                )}`}
+              </span>
+              <button
+                onClick={() =>
+                  copyTextToClipboard(
+                    `${window.location.href}video/${state.divKey.replace(
+                      "_",
+                      "-"
+                    )}`
+                  )
+                }
+                className="border ml-1 p-1 rounded text-sm break-normal"
+              >
+                Copy
+              </button>
+            </div>
             <div className="flex items-center justify-between mt-2 break-all">
               <span>
                 Ingest URL:
