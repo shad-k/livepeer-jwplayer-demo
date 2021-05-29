@@ -8,12 +8,13 @@ const apiInstance = axios.create({
 export const createStream = (
   apiKey: string,
   jwPlayerAPIKey: string,
-  jwPlayerSecret: string
+  jwPlayerSecret: string,
+  streamTitle: string
 ): Promise<any> => {
   return apiInstance.post(
     "/stream",
     {
-      name: "test_stream",
+      name: streamTitle,
       profiles: [
         {
           name: "720p",

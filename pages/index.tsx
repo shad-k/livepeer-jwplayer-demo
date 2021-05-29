@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   apiKey: null,
   jwPlayerAPIKey: null,
   jwPlayerSecret: null,
+  streamTitle: null,
   streamId: null,
   playbackId: null,
   streamKey: null,
@@ -26,6 +27,7 @@ const reducer = (state, action) => {
         apiKey: action.payload.apiKey,
         jwPlayerAPIKey: action.payload.jwPlayerAPIKey,
         jwPlayerSecret: action.payload.jwPlayerSecret,
+        streamTitle: action.payload.streamTitle,
       };
     case "CREATE_CLICKED":
       return {
@@ -78,7 +80,8 @@ export default function App() {
           const streamCreateResponse = await createStream(
             state.apiKey,
             state.jwPlayerAPIKey,
-            state.jwPlayerSecret
+            state.jwPlayerSecret,
+            state.streamTitle
           );
           if (streamCreateResponse.data) {
             const {
@@ -163,10 +166,10 @@ export default function App() {
       </header>
       <AppBody
         state={state}
-        setApiKey={(apiKey, jwPlayerAPIKey, jwPlayerSecret) =>
+        setApiKey={(apiKey, jwPlayerAPIKey, jwPlayerSecret, streamTitle) =>
           dispatch({
             type: "SUBMIT_INPUTS",
-            payload: { apiKey, jwPlayerAPIKey, jwPlayerSecret },
+            payload: { apiKey, jwPlayerAPIKey, jwPlayerSecret, streamTitle },
           })
         }
         createStream={() => dispatch({ type: "CREATE_CLICKED" })}

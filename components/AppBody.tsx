@@ -10,7 +10,8 @@ interface Props {
   setApiKey: (
     apiKey: string,
     jwPlayerAPIKey: string,
-    jwPlayerSecret: string
+    jwPlayerSecret: string,
+    streamTitle: string
   ) => void;
   createStream: () => void;
 }

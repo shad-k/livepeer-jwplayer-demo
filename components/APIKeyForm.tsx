@@ -4,7 +4,8 @@ interface Props {
   setApiKey: (
     apiKey: string,
     jwPlayerAPIKey: string,
-    jwPlayerSecret: string
+    jwPlayerSecret: string,
+    streamTitle: string
   ) => void;
 }
 const APIKeyForm: React.FC<Props> = ({ setApiKey }) => {
@@ -13,9 +14,15 @@ const APIKeyForm: React.FC<Props> = ({ setApiKey }) => {
       apiKey,
       jwPlayerAPIKey,
       jwPlayerSecret,
+      streamTitle,
     } = event.target as HTMLFormElement;
 
-    setApiKey(apiKey.value, jwPlayerAPIKey.value, jwPlayerSecret.value);
+    setApiKey(
+      apiKey.value,
+      jwPlayerAPIKey.value,
+      jwPlayerSecret.value,
+      streamTitle.value
+    );
   };
 
   return (
@@ -46,6 +53,15 @@ const APIKeyForm: React.FC<Props> = ({ setApiKey }) => {
         className="border active:border-livepeer p-2 w-full rounded mb-4"
         name="jwPlayerSecret"
         required
+      />
+
+      <label>Video Title:</label>
+      <input
+        type="text"
+        placeholder="Enter video title"
+        className="border active:border-livepeer p-2 w-full rounded mb-4"
+        name="streamTitle"
+        defaultValue="Livepeer Demo"
       />
       <button
         type="submit"

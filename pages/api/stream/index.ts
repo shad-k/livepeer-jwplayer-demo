@@ -7,14 +7,15 @@ const getSignatureForJWPlayerAPI = (
   secret,
   nonce,
   timestamp,
-  playbackURL = null
+  playbackURL = null,
+  streamName = ""
 ) => {
   var shasum = crypto.createHash("sha1");
   let paramsToText = `api_format=json&api_key=${key.toString()}&api_nonce=${nonce}&api_timestamp=${timestamp.toString()}`;
   if (playbackURL) {
     paramsToText += `&sourceformat=m3u8&sourcetype=url&sourceurl=${encodeURIComponent(
       playbackURL
-    )}&tags=Livepeer&title=${encodeURIComponent("Livepeer Demo")}`;
+    )}&tags=Livepeer&title=${encodeURIComponent(streamName)}`;
   }
   paramsToText += secret;
   shasum.update(paramsToText);
@@ -87,7 +88,7 @@ const getAvailablePlayers = async (key, secret) => {
   }
 };
 
-const createVideoOnJWPlayer = async (key, secret, playbackURL) => {
+const createVideoOnJWPlayer = async (key, secret, playbackURL, streamName) => {
   const nonce = getNonce(8);
   const timestamp = Math.floor(new Date().getTime() / 1000);
   const signature = getSignatureForJWPlayerAPI(
@@ -95,11 +96,12 @@ const createVideoOnJWPlayer = async (key, secret, playbackURL) => {
     secret,
     nonce,
     timestamp,
-    playbackURL
+    playbackURL,
+    streamName
   );
   const requestURL = new URL(
     `https://api.jwplatform.com/v1/videos/create?api_format=json&api_nonce=${nonce}&api_timestamp=${timestamp}&api_signature=${signature}&api_key=${key}&sourceformat=m3u8&sourcetype=url&sourceurl=${playbackURL}&tags=Livepeer&title=${encodeURIComponent(
-      "Livepeer Demo"
+      streamName
     )}`
   );
   const createVideoResponse = await axios.post(requestURL.toString());
@@ -142,7 +144,8 @@ export default async (req, res) => {
         const createVideoOnJWPlayerResponse = await createVideoOnJWPlayer(
           jwPlayerAPIKey,
           jwPlayerSecret,
-          `https://cdn.livepeer.com/hls/${createStreamResponse.data.playbackId}/index.m3u8`
+          `https://cdn.livepeer.com/hls/${createStreamResponse.data.playbackId}/index.m3u8`,
+          streamName
         );
 
         const videoKey = createVideoOnJWPlayerResponse.video.key;
