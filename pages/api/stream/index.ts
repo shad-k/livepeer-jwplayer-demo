@@ -2,6 +2,7 @@ import axios from "axios";
 import crypto from "crypto";
 import { URL } from "url";
 
+// Creates a signature required by the JWPlayer API to sign each request.
 const getSignatureForJWPlayerAPI = (
   key,
   secret,
@@ -22,6 +23,7 @@ const getSignatureForJWPlayerAPI = (
   return shasum.digest("hex");
 };
 
+// Generates a random 8 digit nonce to be sent in JWPlayer API requests.
 const getNonce = (length) => {
   var nonce = "";
   var possible = "0123456789";
@@ -51,6 +53,7 @@ const makeCreateRequest = async (
   );
 };
 
+// Gets all available players on JWPlayer and uses the first. If none exists it creates a new player.
 const getAvailablePlayers = async (key, secret) => {
   const nonce = getNonce(8);
   const timestamp = Math.floor(new Date().getTime() / 1000);
@@ -88,6 +91,7 @@ const getAvailablePlayers = async (key, secret) => {
   }
 };
 
+// Registers the video on JWPlayer. This is required to track video analytics.
 const createVideoOnJWPlayer = async (key, secret, playbackURL, streamName) => {
   const nonce = getNonce(8);
   const timestamp = Math.floor(new Date().getTime() / 1000);
@@ -118,6 +122,8 @@ const createVideoOnJWPlayer = async (key, secret, playbackURL, streamName) => {
  * With this data available the ingest and playback urls would respectively be:
  * Ingest URL: rtmp://rtmp.livepeer.com/live/{stream-key}
  * Playback URL: https://cdn.livepeer.com/hls/{playbackId}/index.m3u8
+ * Also, connects to JWPlayer API to get the available players.
+ * Using the player data and the stream data registers the video on JWPlayer
  */
 export default async (req, res) => {
   if (req.method === "POST") {
