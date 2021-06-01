@@ -100,7 +100,10 @@ const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
       );
       return (
         <div className="container w-full flex flex-col items-center overflow-auto pb-14">
-          <div className="relative bg-black h-56 lg:h-96 w-full xl:w-3/5 overflow-hidden">
+          <div
+            className="relative bg-black w-full xl:w-3/5 overflow-hidden"
+            style={{ minHeight: "400px" }}
+          >
             <div id={`botr_${state.divKey}_div`} className="h-full w-full" />
             {streamIsActive && state.jwPlayerHostedLibraryLink && (
               <Head>
@@ -123,28 +126,6 @@ const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
             desktop, or Larix on mobile
           </div>
           <div className="w-11/12 lg:w-full xl:w-3/5 border border-dashed p-2 m-4 flex flex-col text-sm">
-            <div className="flex items-center justify-between mt-2 break-all">
-              <span>
-                Share video:{" "}
-                {`${window.location.href}video/${state.divKey.replace(
-                  "_",
-                  "-"
-                )}`}
-              </span>
-              <button
-                onClick={() =>
-                  copyTextToClipboard(
-                    `${window.location.href}video/${state.divKey.replace(
-                      "_",
-                      "-"
-                    )}`
-                  )
-                }
-                className="border ml-1 p-1 rounded text-sm break-normal"
-              >
-                Copy
-              </button>
-            </div>
             <div className="flex items-center justify-between mt-2 break-all">
               <span>
                 Ingest URL:
@@ -183,6 +164,28 @@ const AppBody: React.FC<Props> = ({ state, setApiKey, createStream }) => {
                 onClick={() =>
                   copyTextToClipboard(
                     `https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`
+                  )
+                }
+                className="border ml-1 p-1 rounded text-sm break-normal"
+              >
+                Copy
+              </button>
+            </div>
+            <div className="flex items-center justify-between mt-4 break-all">
+              <span>
+                Share video: <br />
+                {`${window.location.href}video/${state.divKey.replace(
+                  "_",
+                  "-"
+                )}`}
+              </span>
+              <button
+                onClick={() =>
+                  copyTextToClipboard(
+                    `${window.location.href}video/${state.divKey.replace(
+                      "_",
+                      "-"
+                    )}`
                   )
                 }
                 className="border ml-1 p-1 rounded text-sm break-normal"
