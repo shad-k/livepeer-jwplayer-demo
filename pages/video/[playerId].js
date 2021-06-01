@@ -1,43 +1,15 @@
 import React, { useLayoutEffect } from "react";
 import { useRouter } from "next/router";
 
+import dynamic from "next/dynamic";
+
+const Iframe = dynamic(() => import("../../components/Iframe"), {
+  ssr: false,
+});
+
 const VideoPage = () => {
   const router = useRouter();
   const { playerId } = router.query;
-
-  const adjustIframe = (player) => {
-    const windowWidth = window.innerWidth;
-
-    if (windowWidth > 1280 && windowWidth < 1536) {
-      player.style.height = "430px";
-    } else if (windowWidth > 1024 && windowWidth < 1280) {
-      player.style.height = "580px";
-    } else if (windowWidth < 1024) {
-      player.style.height = "430px";
-    } else {
-      player.style.height = "520px";
-    }
-  };
-
-  useLayoutEffect(() => {
-    let interval;
-    const player = document.getElementById("player");
-    if (player) {
-      adjustIframe(player);
-    } else {
-      interval = setInterval(() => {
-        const player = document.getElementById("player");
-        if (player) {
-          adjustIframe(player);
-          clearInterval(interval);
-        }
-      }, 1000);
-    }
-
-    () => {
-      if (interval) clearInterval(interval);
-    };
-  }, []);
 
   return (
     <main className="container pb-12 h-screen m-auto pt-24 lg:pt-40">
@@ -60,7 +32,7 @@ const VideoPage = () => {
       </header>
       <div className="container flex flex-col items-center w-full xl:w-3/5 m-auto justify-center pb-12">
         {playerId && (
-          <iframe
+          <Iframe
             className="w-full bg-black"
             src={`https://cdn.jwplayer.com/players/${playerId}.html`}
             allowFullScreen
